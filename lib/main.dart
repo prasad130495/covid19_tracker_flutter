@@ -48,7 +48,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String url = "https://api.covidtracking.com/v1/us/daily.json";
-
+  int date;
+  String state;
+  int positive;
+  int death;
+  Future<Post> post = fetchPost();
   @override
   void initState() {
     super.initState();
@@ -57,7 +61,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Future<Post> post = fetchPost();
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -79,8 +82,11 @@ class _MyHomePageState extends State<MyHomePage> {
             future: post,
             builder: (context, abc) {
               if (abc.hasData) {
-                InputDecoration(labelText: "Testing");
-                return Text(abc.data.state);
+                date = abc.data.date;
+                state = abc.data.state;
+                positive = abc.data.positive;
+                death = abc.data.death;
+                return Text("");
               } else if (abc.hasError) {
                 return Text("${abc.error}");
               }
@@ -89,8 +95,37 @@ class _MyHomePageState extends State<MyHomePage> {
               return CircularProgressIndicator();
             },
           ),
-          TextFormField(
-            decoration: InputDecoration(labelText: 'Enter your username'),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text("Date: $date",
+                style: TextStyle(
+                    color: Colors.grey[800],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 40)),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text("State: $state",
+                style: TextStyle(
+                    color: Colors.grey[800],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 40)),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text("$positive cases",
+                style: TextStyle(
+                    color: Colors.grey[800],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 40)),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text("$death deaths",
+                style: TextStyle(
+                    color: Colors.grey[800],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 40)),
           )
         ],
       )),
